@@ -1,5 +1,5 @@
 import express from "express";
-import { Book } from "../models/bookModel.js";
+import { Manga } from "../models/mangaModel.js";
 
 const router = express.Router();
 
@@ -8,21 +8,25 @@ router.post('/', async (req, res) => {
       if (
         !req.body.title ||
         !req.body.author ||
-        !req.body.publishYear
+        !req.body.genre ||
+        !req.body.publishYear || 
+        !req.body.description
       ) {
         return res.status(400).send({
           message: 'Missing required fields',
         });
       }
   
-      const newBook = {
+      const newManga = {
         title: req.body.title,
         author: req.body.author,
+        genre: req.body.genre,
         publishYear: req.body.publishYear,
+        description: req.body.description
       };
   
-      const book = await Book.create(newBook);
-      return res.status(201).send(book);
+      const manga = await Manga.create(newManga);
+      return res.status(201).send(manga);
   
     } catch (err) {
       console.log(err.message);
@@ -32,10 +36,10 @@ router.post('/', async (req, res) => {
   
 router.get('/', async (req, res) => {
     try {
-      const books = await Book.find();
+      const manga = await Manga.find();
       return res.status(200).json({
-        count: books.length,
-        data: books,
+        count: manga.length,
+        data: manga,
       });
     } catch (err) {
       console.log(err.message);
@@ -47,9 +51,9 @@ router.get('/:id', async (req, res) => {
     try {
   
       const { id } = req.params;
-      const book = await Book.findById(id);
+      const manga = await Manga.findById(id);
   
-      return res.status(200).send(book);
+      return res.status(200).send(manga);
   
     }
     catch (err) {
@@ -63,7 +67,9 @@ router.put('/:id', async (req, res) => {
       if (
         !req.body.title ||
         !req.body.author ||
-        !req.body.publishYear
+        !req.body.genre ||
+        !req.body.publishYear || 
+        !req.body.description
       ) {
         return res.status(400).send({
           message: 'Missing required fields',
@@ -72,13 +78,13 @@ router.put('/:id', async (req, res) => {
   
       const { id } = req.params;
   
-      const result = await Book.findByIdAndUpdate(id, req.body);
+      const result = await Manga.findByIdAndUpdate(id, req.body);
   
       if (!result) {
-        return res.status(404).json({ message: 'Book not found' });
+        return res.status(404).json({ message: 'Manga not found' });
       }
   
-      return res.status(200).send({ message: 'Book updated successfully' });
+      return res.status(200).send({ message: 'Manga updated successfully' });
     } catch (error) {
       console.log(error.message);
       res.status(500).send({ message: error.message });
@@ -89,13 +95,13 @@ router.delete('/:id', async (req, res) => {
     try {
       const { id } = req.params;
   
-      const result = await Book.findByIdAndDelete(id);
+      const result = await Manga.findByIdAndDelete(id);
   
       if (!result) {
-        return res.status(404).json({ message: 'Book not found' });
+        return res.status(404).json({ message: 'Manga not found' });
       }
   
-      return res.status(200).send({ message: 'Book deleted successfully' });
+      return res.status(200).send({ message: 'Manga deleted successfully' });
     } catch (error) {
       console.log(error.message);
       res.status(500).send({ message: error.message });

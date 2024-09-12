@@ -1,7 +1,7 @@
 import express from 'express';
 import { PORT, mongoDBURL } from './config.js';
 import mongoose from 'mongoose';
-import booksRoute from './routes/booksRoute.js';
+import mangasRoute from './routes/mangasRoute.js';
 import cors from 'cors';
 
 const app = express();
@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
   return res.status(234).send('teste');
 });
 
-app.use('/books', booksRoute);
+app.use('/mangas', mangasRoute);
 
 mongoose
   .connect(mongoDBURL)
