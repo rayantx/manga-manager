@@ -32,6 +32,12 @@ cd front && bun install
 
 ## 🎡 USAGE
 
+**ADD your MongoDB URL in** `./manga-manager/back/config.js`
+```bash
+export const mongoDBURL =
+"your_url";
+```
+
 **RUN** in terminal with bun
 ```bash
 ./manga-manager/back & bun run dev
